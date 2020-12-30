@@ -1,15 +1,30 @@
 <!-- User feedback -->
 {% if not page.is_homepage %}
+  <style>
+    .user-feedback-answer {
+      display: inline-block;
+    }
+    .user-feedback-answer--no {
+      margin-left: 1em;
+    }
+    .user-feedback-response {
+      display: none;
+      margin-top: 1em;
+    }
+    .user-feedback-response--visible {
+      display: block;
+    }
+  </style>  
   <div id="user-feedback">
       <h2 id="user-feedback-title">Feedback</h2>
-      <p>Was this page helpful?</p>
+      <p>Did this page help you?</p>
       <button class="user-feedback-answer user-feedback-answer--yes">Yes</button>
       <button class="user-feedback-answer user-feedback-answer--no">No</button>
       <p class="user-feedback-response user-feedback-response--yes">
         Thank you for the feedback!
       </p>
       <p class="user-feedback-response user-feedback-response--no">
-        We're sorry to hear that. Please <a href="https://github.com/codacy/docs/issues/new">tell us how we can improve</a>.
+        We're sorry to hear that. Please <a target="_blank" href="https://github.com/codacy/docs/issues/new?labels=user%20feedback&template=documentation-feedback.md&title=Feedback%20on%20%22{{ page.title }}%22">tell us how we can improve</a>.
       </p>  
   </div>
   <script>
