@@ -2,7 +2,17 @@
 {% if not page.is_homepage %}
   <style>
     .user-feedback-answer {
+      background-color: var(--md-accent-fg-color--transparent);
+      border-radius: 0.3em;
+      color: var(--codacy-neutral-600);
       display: inline-block;
+      font: inherit;
+      font-size: 0.9em;
+      padding: 0.2em;
+      width: 5em;
+    }
+    .user-feedback-answer:disabled {
+      background-color: var(--md-default-fg-color--lightest);
     }
     .user-feedback-answer--no {
       margin-left: 1em;
