@@ -5,20 +5,20 @@
   <div id="user-feedback">
       <h2 id="user-feedback-title">Feedback</h2>
       <p>Was this page helpful?</p>
-      <button class="user-feedback-answer user-feedback-answer-yes">Yes</button>
-      <button class="user-feedback-answer user-feedback-answer-no">No</button>
-      <p class="user-feedback-response user-feedback-response-yes">
-        Glad to hear it! Please <a href="https://github.com/USERNAME/REPOSITORY/issues/new">tell us how we can improve</a>.
+      <button class="user-feedback-answer user-feedback-answer--yes">Yes</button>
+      <button class="user-feedback-answer user-feedback-answer--no">No</button>
+      <p class="user-feedback-response user-feedback-response--yes">
+        Thank you for the feedback!
       </p>
-      <p class="user-feedback-response user-feedback-response-no">
-        Sorry to hear that. Please <a href="https://github.com/USERNAME/REPOSITORY/issues/new">tell us how we can improve</a>.
+      <p class="user-feedback-response user-feedback-response--no">
+        We're sorry to hear that. Please <a href="https://github.com/codacy/docs/issues/new">tell us how we can improve</a>.
       </p>  
   </div>
   <script>
-    const yesButton = document.querySelector('.user-feedback-answer-yes');
-    const noButton = document.querySelector('.user-feedback-answer-no');
-    const yesResponse = document.querySelector('.user-feedback-response-yes');
-    const noResponse = document.querySelector('.user-feedback-response-no');
+    const yesButton = document.querySelector('.user-feedback-answer--yes');
+    const noButton = document.querySelector('.user-feedback-answer--no');
+    const yesResponse = document.querySelector('.user-feedback-response--yes');
+    const noResponse = document.querySelector('.user-feedback-response--no');
     const disableButtons = () => {
       yesButton.disabled = true;
       noButton.disabled = true;
@@ -36,12 +36,12 @@
       ga(args.command, args.hitType, args.category, args.action, args.label, args.value);
     };
     yesButton.addEventListener('click', () => {
-      yesResponse.classList.add('user-feedback-response-visible');
+      yesResponse.classList.add('user-feedback-response--visible');
       disableButtons();
       sendFeedback(1);
     });
     noButton.addEventListener('click', () => {
-      noResponse.classList.add('user-feedback-response-visible');
+      noResponse.classList.add('user-feedback-response--visible');
       disableButtons();
       sendFeedback(0);
     });
