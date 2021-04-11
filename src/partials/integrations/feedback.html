@@ -73,11 +73,13 @@
       noButton.disabled = true;
     };
     const sendFeedback = (value) => {
-      if (typeof ga === "function" || ga.getAll().length > 0 ) {
-        // Send an event to Google Analytics using the default Tracker object
-        // https://developers.google.com/analytics/devguides/collection/analyticsjs/tracker-object-reference#send
-        ga.getAll()[0].send("event", "User Feedback", "click", window.location.pathname, value);
-      }
+      ga(function() {
+        if (ga.getAll().length > 0) {
+          // Send an event to Google Analytics using the default Tracker object
+          // https://developers.google.com/analytics/devguides/collection/analyticsjs/tracker-object-reference#send
+          ga.getAll()[0].send("event", "Test", "click", window.location.pathname, value);
+        }
+      });
     };
     yesButton.addEventListener('click', () => {
       yesResponse.classList.add('user-feedback-response--visible');
