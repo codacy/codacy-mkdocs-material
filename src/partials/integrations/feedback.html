@@ -66,12 +66,23 @@
       <span class="svg-icon">{% include ".icons/material/close.svg" %}</span> No
     </button>
 
-    <p class="user-feedback-response user-feedback-response--yes">
-      Thank you for the feedback!
-    </p>
-    <p class="user-feedback-response user-feedback-response--no">
-      We're sorry to hear that. Please <a target="_blank" href="{{ config.repo_url }}/issues/new?labels=user%20feedback&template=documentation-feedback.md&title=Feedback%20on%20%22{{ page.title }}%22">let us know what we can improve</a>.
-    </p>
+    <div class="user-feedback-response user-feedback-response--yes">
+      <p>
+        Thanks for the feedback! Is there anything else you'd like to tell us about this page?
+      </p>
+      <textarea class="user-feedback-textarea" rows="4" maxlength="1000"></textarea>
+      <br/>
+      <button class="user-feedback-send" type="button">Send</button>
+    </div>
+
+    <div class="user-feedback-response user-feedback-response--no">
+      <p>
+        Thanks for the feedback! Let us know what we can improve or <a target="_blank" href="{{ config.repo_url }}/issues/new?labels=user%20feedback&template=documentation-feedback.md&title=Feedback%20on%20%22{{ page.title }}%22">create an issue on our GitHub repository</a>:
+      </p>
+      <textarea class="user-feedback-textarea" rows="4" maxlength="1000"></textarea>
+      <br/>
+      <button class="user-feedback-send" type="button">Send</button>
+    </div>
 
     <p>
       If you have a question or need help, please <a href="{{ config.extra.community_url }}">ask our community</a> or contact <a href="mailto:{{ config.extra.support_email }}?subject=Question%20regarding%20{{ page.title }}">{{ config.extra.support_email }}</a>.
@@ -82,11 +93,18 @@
     const noButton = document.querySelector('.user-feedback-answer--no');
     const yesResponse = document.querySelector('.user-feedback-response--yes');
     const noResponse = document.querySelector('.user-feedback-response--no');
-    const disableButtons = () => {
+    const yesQualitativeResponse = document.querySelector('.user-feedback-response--yes textarea');
+    const yesSendButton = document.querySelector('.user-feedback-response--yes button');
+    const noQualitativeResponse = document.querySelector('.user-feedback-response--no textarea');
+    const noSendButton = document.querySelector('.user-feedback-response--no button');
+    const disableFeedbackButtons = () => {
       yesButton.disabled = true;
       noButton.disabled = true;
     };
-    const sendFeedback = (value) => {
+    const disableSendButtons = () => {
+      yesSendButton.disabled = true;
+    }
+    const sendQuantitativeFeedback = (value) => {
       if (typeof analytics === "object") {
         // Send an event to Segment
         analytics.track("User Feedback Sent", {
@@ -95,15 +113,32 @@
         });
       }
     };
+    const sendQualitativeFeedback = (value) => {
+      if (typeof analytics === "object") {
+        // Send an event to Segment
+        analytics.track("User Qualitative Feedback Sent", {
+          url: window.location.href,
+          value: value
+        });
+      }
+    };
     yesButton.addEventListener('click', () => {
       yesResponse.classList.add('user-feedback-response--visible');
-      disableButtons();
-      sendFeedback(1);
+      disableFeedbackButtons();
+      //sendQuantitativeFeedback(1);
     });
     noButton.addEventListener('click', () => {
       noResponse.classList.add('user-feedback-response--visible');
-      disableButtons();
-      sendFeedback(0);
+      disableFeedbackButtons();
+      //sendQuantitativeFeedback(0);
+    });
+    yesSendButton.addEventListener('click', () => {
+      alert(yesQualitativeResponse.value);
+      disableSendButtons();
+    });
+    noSendButton.addEventListener('click', () => {
+      alert(noQualitativeResponse.value);
+      disableSendButtons();
     });
   </script>
 {% endif %}
