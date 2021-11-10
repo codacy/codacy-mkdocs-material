@@ -6,18 +6,17 @@
 -->
 {% if config.extra.user_feedback == "true" and (not page.is_homepage and page.content) %}
   <style>
-    #user-feedback {
+    #feedback-block {
       margin-top: 3em;
       padding: 1em;
       background-color: var(--codacy-neutral-50);
     }
 
-    #feedback {
+    #feedback-block h3 {
       margin-top: unset;
     }
 
-    .user-feedback-answer,
-    .user-feedback-send {
+    #feedback-block button {
       background-color: var(--md-accent-fg-color--transparent);
       border-radius: .3em;
       color: var(--codacy-neutral-600);
@@ -28,40 +27,37 @@
       cursor: pointer;
       width: 6em;
     }
-
-    .user-feedback-answer:hover {
-      background-color: var(--codacy-neutral-300);
-    }
-
-    .user-feedback-answer .svg-icon {
+    
+    #feedback-block button .svg-icon {
       display: inline-block;
       margin-right: .5em;
       vertical-align: top;
       width: 1.3em;
     }
 
-    .user-feedback-answer:disabled,
-    .user-feedback-send:disabled {
+    #feedback-block button:hover {
+      background-color: var(--codacy-neutral-300);
+    }
+
+    #feedback-block button:disabled {
       background-color: var(--md-default-fg-color--lightest);
     }
 
-    .user-feedback-send {
-      float: left;
-    }
-
-    .user-feedback-answer--no {
+    #feedback-block .feedback-button-no {
       margin-left: 1em;
     }
 
-    .user-feedback-response {
+    #feedback-block #feedback-prompt-yes,
+    #feedback-block #feedback-prompt-no {
       display: none;
     }
 
-    .user-feedback-response--visible {
-      display: block;
+    #feedback-block .feedback-form {
+      width: 100%;
+      max-width: 550px;
     }
 
-    .user-feedback-response textarea {
+    #feedback-block textarea {
       border: 1px solid var(--md-accent-fg-color--transparent);
       border-radius: 0.3em;
       padding: 0.75rem 0.5rem 0.75rem 0.75rem;
@@ -70,57 +66,61 @@
       max-width: 550px;
     }
 
-    .feedback-prompt--invisible {
-      display: none;
+    #feedback-block .feedback-button-send {
+      float: left;
     }
 
-    .user-feedback-thanks {
-      display: none;
-    }
-
-    .user-feedback-thanks--visible {
-      display: block;
-    }
-
-    .character-count {
+    #feedback-block .character-count {
       font-size: 0.8em;
       float: right;
     }
+
+    #feedback-block #feedback-thanks {
+      display: none;
+    }
+
+    #feedback-block .feedback-visible {
+      display: block !important;
+    }
+
+    #feedback-block .feedback-invisible {
+      display: none !important;
+    }
   </style>  
-  <div id="user-feedback">
-    <h3 id="feedback">Share your feedback 📢</h3>
-    <div id="feedback-prompt">
+  <div id="feedback-block">
+    <h3>Share your feedback 📢</h3>
+    <div id="feedback-form">
       <p>Did this page help you?</p>
 
-      <button class="user-feedback-answer user-feedback-answer--yes md-icon">
+      <button id="feedback-button-yes" class="md-icon">
         <span class="svg-icon">{% include ".icons/material/check.svg" %}</span> Yes
       </button>
-      <button class="user-feedback-answer user-feedback-answer--no md-icon">
+      <button id="feedback-button-no" class="md-icon">
         <span class="svg-icon">{% include ".icons/material/close.svg" %}</span> No
       </button>
 
-      <div class="user-feedback-response user-feedback-response--yes">
+      <div id="feedback-prompt-yes">
         <p>
           Thanks for the feedback! Is there anything else you'd like to tell us about this page?
         </p>
-        <div style="width: 100%; max-width: 550px;">
-          <textarea class="user-feedback-textarea user-feedback-textarea--yes" rows="5" maxlength="255"></textarea>
+        <div class="feedback-form">
+          <textarea rows="5" maxlength="255"></textarea>
           <br/>
-          <button class="user-feedback-send" type="button">Send</button>
+          <button class="feedback-button-send" type="button">Send</button>
           <span class="character-count">255 characters left</span>
           <br/>
         </div>
       </div>
 
-      <div class="user-feedback-response user-feedback-response--no">
+      <div id="feedback-prompt-no">
         <p>
           We're sorry to hear that. Please let us know what we can improve:
         </p>
-        <div style="width: 100%; max-width: 550px;">
-          <textarea class="user-feedback-textarea user-feedback-textarea--no" rows="5" maxlength="255"></textarea>
+        <div class="feedback-form">
+          <textarea rows="5" maxlength="255"></textarea>
           <br/>
+          <button class="feedback-button-send" type="button">Send</button>
           <span class="character-count">255 characters left</span>
-          <button class="user-feedback-send" type="button">Send</button>
           <br/>
         </div>
         <p>
@@ -129,7 +129,7 @@
       </div>
     </div>
 
-    <p class="user-feedback-thanks">
+    <p id="feedback-thanks">
       Thanks for helping improve the Codacy documentation.
     </p>
 
@@ -138,36 +138,69 @@
     </p>
   </div>
   <script>
-    const feedbackPrompt = document.querySelector('#feedback-prompt')
-    const yesButton = document.querySelector('.user-feedback-answer--yes');
-    const noButton = document.querySelector('.user-feedback-answer--no');
-    const yesResponse = document.querySelector('.user-feedback-response--yes');
-    const noResponse = document.querySelector('.user-feedback-response--no');
-    const yesQualitativeResponse = document.querySelector('.user-feedback-response--yes textarea');
-    const yesSendButton = document.querySelector('.user-feedback-response--yes button');
-    const noQualitativeResponse = document.querySelector('.user-feedback-response--no textarea');
-    const noSendButton = document.querySelector('.user-feedback-response--no button');
-    const userFeedbackThanks = document.querySelector('.user-feedback-thanks');
-    const yesRemainingCharacters = document.querySelector('.user-feedback-response--yes .character-count');
-    const noRemainingCharacters = document.querySelector('.user-feedback-response--no .character-count');
-    const disableFeedbackButtons = () => {
-      yesButton.disabled = true;
-      noButton.disabled = true;
-    };
-    const sendQuantitativeFeedback = (value) => {
+    // Obtain relevant elements
+    const feedbackForm = document.querySelector('#feedback-block #feedback-form')
+
+    const yesButton = document.querySelector('#feedback-block #feedback-button-yes');
+    const noButton = document.querySelector('#feedback-block #feedback-button-no');
+
+    const yesFeedbackPrompt = document.querySelector('#feedback-block #feedback-prompt-yes');
+    const yesTextArea = document.querySelector('#feedback-block #feedback-prompt-yes textarea');
+    const yesSendButton = document.querySelector('#feedback-block #feedback-prompt-yes .feedback-button-send');
+    const yesRemainingCharacters = document.querySelector('#feedback-block #feedback-prompt-yes .character-count');
+
+    const noFeedbackPrompt = document.querySelector('#feedback-block #feedback-prompt-no');
+    const noTextArea = document.querySelector('#feedback-block #feedback-prompt-no textarea');
+    const noSendButton = document.querySelector('#feedback-block #feedback-prompt-no .feedback-button-send');
+    const noRemainingCharacters = document.querySelector('#feedback-block #feedback-prompt-no .character-count');
+
+    const userFeedbackThanks = document.querySelector('#feedback-block #feedback-thanks');
+
+    // Define helper functions
+    function sendQuantitativeFeedback(value) {
       if (typeof analytics === "object") {
-        // Send an event to Segment
+        // Send event to Segment
         analytics.track("User Feedback Sent", {
           url: window.location.href,
           value: value
         });
       }
     };
-    const sendQualitativeFeedback = (value, text) => {
-      feedbackPrompt.classList.add('feedback-prompt--invisible');
-      userFeedbackThanks.classList.add('user-feedback-thanks--visible');
+
+    function disableFeedbackButtons() {
+      yesButton.disabled = true;
+      noButton.disabled = true;
+    }
+
+    function openYesFeedbackPrompt() {
+      disableFeedbackButtons();
+      yesFeedbackPrompt.classList.add('feedback-visible');
+    };
+
+    function openNoFeedbackPrompt() {
+      disableFeedbackButtons();
+      noFeedbackPrompt.classList.add('feedback-visible');
+    };
+
+    function updateRemainingCharacters(textArea, remainingCharacters) {
+      maximum_length = textArea.getAttribute('maxlength')
+      remaining_length = maximum_length - textArea.value.length
+
+      if (textArea.value.length > maximum_length) {
+          return false;
+      }
+      if (remaining_length == 1) {
+        remainingCharacters.innerHTML = remaining_length + " character left";
+      } else {
+        remainingCharacters.innerHTML = remaining_length + " characters left";
+      }
+    }
+
+    function sendQualitativeFeedback(value, text) {
+      feedbackForm.classList.add('feedback-invisible');
+      userFeedbackThanks.classList.add('feedback-visible');
       if (typeof analytics === "object") {
-        // Send an event to Segment
+        // Send event to Segment
         analytics.track("User Qualitative Feedback Sent", {
           url: window.location.href,
           value: value,
@@ -175,41 +208,35 @@
         });
       }
     };
+
+    // Add event listeners
+    // Clicking on the Yes/No buttons
     yesButton.addEventListener('click', () => {
-      yesResponse.classList.add('user-feedback-response--visible');
-      disableFeedbackButtons();
       sendQuantitativeFeedback(1);
+      openYesFeedbackPrompt();
     });
+    
     noButton.addEventListener('click', () => {
-      noResponse.classList.add('user-feedback-response--visible');
-      disableFeedbackButtons();
       sendQuantitativeFeedback(0);
+      openNoFeedbackPrompt();
     });
+
+    // Updating the remaining character count
+    yesTextArea.addEventListener('keyup', () => {
+      updateRemainingCharacters(yesTextArea, yesRemainingCharacters);
+    });
+    
+    noTextArea.addEventListener('keyup', () => {
+      updateRemainingCharacters(noTextArea, noRemainingCharacters);
+    });
+
+    // Clicking on the Send buttons
     yesSendButton.addEventListener('click', () => {
-      sendQualitativeFeedback(1, yesQualitativeResponse.value);
+      sendQualitativeFeedback(1, yesTextArea.value);
     });
+
     noSendButton.addEventListener('click', () => {
-      sendQualitativeFeedback(0, noQualitativeResponse.value);
-    });
-
-    yesQualitativeResponse.addEventListener('keyup', () => {
-      maximum_length = yesQualitativeResponse.getAttribute('maxlength')
-      remaining_length = maximum_length - yesQualitativeResponse.value.length
-
-      if(yesQualitativeResponse.value.length > maximum_length) {
-          return false;
-      }
-      yesRemainingCharacters.innerHTML = remaining_length + " characters left";
-    });
-
-    noQualitativeResponse.addEventListener('keyup', () => {
-      maximum_length = noQualitativeResponse.getAttribute('maxlength')
-      remaining_length = maximum_length - noQualitativeResponse.value.length
-
-      if(noQualitativeResponse.value.length > maximum_length) {
-          return false;
-      }
-      noRemainingCharacters.innerHTML = remaining_length + " characters left";
+      sendQualitativeFeedback(0, noTextArea.value);
     });
   </script>
 {% endif %}
