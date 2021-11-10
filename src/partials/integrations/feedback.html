@@ -17,7 +17,7 @@
     }
 
     .user-feedback-answer,
-    .user-feedback-response button {
+    .user-feedback-send {
       background-color: var(--md-accent-fg-color--transparent);
       border-radius: .3em;
       color: var(--codacy-neutral-600);
@@ -41,8 +41,12 @@
     }
 
     .user-feedback-answer:disabled,
-    .user-feedback-response button:disabled {
+    .user-feedback-send:disabled {
       background-color: var(--md-default-fg-color--lightest);
+    }
+
+    .user-feedback-send {
+      float: left;
     }
 
     .user-feedback-answer--no {
@@ -77,6 +81,11 @@
     .user-feedback-thanks--visible {
       display: block;
     }
+
+    .character-count {
+      font-size: 0.8em;
+      float: right;
+    }
   </style>  
   <div id="user-feedback">
     <h3 id="feedback">Share your feedback 📢</h3>
@@ -94,18 +103,29 @@
         <p>
           Thanks for the feedback! Is there anything else you'd like to tell us about this page?
         </p>
-        <textarea class="user-feedback-textarea" rows="4" maxlength="1000"></textarea>
-        <br/>
-        <button class="user-feedback-send" type="button">Send</button>
+        <div style="width: 100%; max-width: 550px;">
+          <textarea class="user-feedback-textarea user-feedback-textarea--yes" rows="5" maxlength="255"></textarea>
+          <br/>
+          <button class="user-feedback-send" type="button">Send</button>
+          <span class="character-count">255 characters left</span>
+          <br/>
+        </div>
       </div>
 
       <div class="user-feedback-response user-feedback-response--no">
         <p>
-          Thanks for the feedback! Let us know what we can improve or <a target="_blank" href="{{ config.repo_url }}/issues/new?labels=user%20feedback&template=documentation-feedback.md&title=Feedback%20on%20%22{{ page.title }}%22">create an issue on our GitHub repository</a>:
+          We're sorry to hear that. Please let us know what we can improve:
         </p>
-        <textarea class="user-feedback-textarea" rows="4" maxlength="1000"></textarea>
-        <br/>
-        <button class="user-feedback-send" type="button">Send</button>
+        <div style="width: 100%; max-width: 550px;">
+          <textarea class="user-feedback-textarea user-feedback-textarea--no" rows="5" maxlength="255"></textarea>
+          <br/>
+          <span class="character-count">255 characters left</span>
+          <button class="user-feedback-send" type="button">Send</button>
+          <br/>
+        </div>
+        <p>
+          Alternatively, you can <a target="_blank" href="{{ config.repo_url }}/issues/new?labels=user%20feedback&template=documentation-feedback.md&title=Feedback%20on%20%22{{ page.title }}%22">create a more detailed issue on our GitHub repository</a>.
+        </p>
       </div>
     </div>
 
@@ -128,6 +148,8 @@
     const noQualitativeResponse = document.querySelector('.user-feedback-response--no textarea');
     const noSendButton = document.querySelector('.user-feedback-response--no button');
     const userFeedbackThanks = document.querySelector('.user-feedback-thanks');
+    const yesRemainingCharacters = document.querySelector('.user-feedback-response--yes .character-count');
+    const noRemainingCharacters = document.querySelector('.user-feedback-response--no .character-count');
     const disableFeedbackButtons = () => {
       yesButton.disabled = true;
       noButton.disabled = true;
@@ -168,6 +190,26 @@
     });
     noSendButton.addEventListener('click', () => {
       sendQualitativeFeedback(0, noQualitativeResponse.value);
+    });
+
+    yesQualitativeResponse.addEventListener('keyup', () => {
+      maximum_length = yesQualitativeResponse.getAttribute('maxlength')
+      remaining_length = maximum_length - yesQualitativeResponse.value.length
+
+      if(yesQualitativeResponse.value.length > maximum_length) {
+          return false;
+      }
+      yesRemainingCharacters.innerHTML = remaining_length + " characters left";
+    });
+
+    noQualitativeResponse.addEventListener('keyup', () => {
+      maximum_length = noQualitativeResponse.getAttribute('maxlength')
+      remaining_length = maximum_length - noQualitativeResponse.value.length
+
+      if(noQualitativeResponse.value.length > maximum_length) {
+          return false;
+      }
+      noRemainingCharacters.innerHTML = remaining_length + " characters left";
     });
   </script>
 {% endif %}
