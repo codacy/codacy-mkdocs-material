@@ -85,12 +85,6 @@
       flex-grow: 1;
     }
 
-    .version-select-container select {
-      @include break-to-device(mobile portrait) {
-        max-width: 38vw;
-      }
-    }
-
     a.cta-btn {
       background-color: #3E7AFF;
       height: px2rem(40px);
