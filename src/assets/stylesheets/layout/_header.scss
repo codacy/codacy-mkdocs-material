@@ -87,7 +87,7 @@
 
     .version-selector-container select {
       @include break-to-device(mobile portrait) {
-        align-items: end;
+        max-width: 40vw;
       }
     }
 
