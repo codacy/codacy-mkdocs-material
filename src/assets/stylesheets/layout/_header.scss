@@ -85,9 +85,9 @@
       flex-grow: 1;
     }
 
-    .version-selector-container select {
+    .version-select-container select {
       @include break-to-device(mobile portrait) {
-        max-width: 40vw;
+        max-width: 38vw;
       }
     }
 
