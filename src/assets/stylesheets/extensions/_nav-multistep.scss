@@ -47,10 +47,6 @@
       &:hover {
         background: $codacy-neutral-700;
 
-        a {
-          color: $codacy-neutral-300;
-        }
-
         &:first-child,
         &:nth-child(2) {
           &::after {
