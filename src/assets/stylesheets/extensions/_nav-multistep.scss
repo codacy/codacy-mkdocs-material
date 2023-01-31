@@ -16,7 +16,7 @@
         align-items: center;
         width: 100%;
         padding: 0 1rem;
-        color: #ffffff;
+        color: #FFFFFF;
       }
 
       &.nav-multistep__step--active {
@@ -48,7 +48,7 @@
           margin-bottom: 0.125rem;
 
           &::after {
-            border-top: 0.375rem solid #ffffff;
+            border-top: 0.375rem solid #FFFFFF;
             border-right: 0.375rem solid transparent;
             border-left: 0.375rem solid transparent;
             position: absolute;
@@ -112,8 +112,8 @@
             border-bottom: 1.5rem solid transparent;
             border-top: 1.5rem solid transparent;
             border-left: 1rem solid $codacy-neutral-800;
-            content: "";
             display: block;
+            content: "";
             position: absolute;
             right: -1rem;
             z-index: 10;
@@ -129,11 +129,11 @@
           }
 
           &::before {
-            background: #ffffff;
+            background: #FFFFFF;
             border-bottom: 1.5rem solid $codacy-neutral-800;
             border-top: 1.5rem solid $codacy-neutral-800;
-            border-left: 1rem solid #ffffff;
-            content: '';
+            border-left: 1rem solid #FFFFFF;
+            content: "";
             left: 0;
             display: block;
             position: absolute;
