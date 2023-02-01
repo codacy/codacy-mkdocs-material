@@ -79,17 +79,23 @@
         display: flex;
         flex: 0 0 33%;
         height: 3rem;
+        margin-left: 0.125rem;
+
+        a,
+        p {
+          padding-left: 2rem;
+        }
 
         &.nav-multistep__step--active {
           &::before {
             border-top-color: $codacy-neutral-300 !important;
             border-bottom-color: $codacy-neutral-300 !important;
           }
-          
+
           &::after {
             border-left-color: $codacy-neutral-300 !important;
           }
-          
+
           &:last-child {
             &::after {
               border-left-color: transparent !important;
@@ -105,54 +111,54 @@
         }
 
         &:hover {
-          &:first-child,
-          &:nth-child(2) {
-            &::after {
-              border-left-color: $codacy-neutral-700;
-            }
+          &::before {
+            border-top-color: $codacy-neutral-700;
+            border-bottom-color: $codacy-neutral-700;
           }
 
-          &:nth-child(2),
-          &:nth-child(3) {
-            &::before {
-              border-top-color: $codacy-neutral-700;
-              border-bottom-color: $codacy-neutral-700;
-            }
-          }
-        }
-
-        &:first-child,
-        &:nth-child(2) {
           &::after {
-            border-bottom: 1.5rem solid transparent;
-            border-top: 1.5rem solid transparent;
-            border-left: 1rem solid $codacy-neutral-800;
-            display: block;
-            content: "";
-            position: absolute;
-            right: -1rem;
-            z-index: 1;
+            border-left-color: $codacy-neutral-700;
           }
         }
 
-        &:nth-child(2),
-        &:nth-child(3) {
-          margin-left: 0.125rem;
+        &::before {
+          background: #FFFFFF;
+          border-bottom: 1.5rem solid $codacy-neutral-800;
+          border-top: 1.5rem solid $codacy-neutral-800;
+          border-left: 1rem solid #FFFFFF;
+          content: "";
+          left: 0;
+          display: block;
+          position: absolute;
+        }
+
+        &::after {
+          border-bottom: 1.5rem solid transparent;
+          border-top: 1.5rem solid transparent;
+          border-left: 1rem solid $codacy-neutral-800;
+          display: block;
+          content: "";
+          position: absolute;
+          right: -1rem;
+          z-index: 1;
+        }
+
+        &:last-child {
+          &::after {
+            display: none !important;
+          }
+        }
+
+        &:first-child {
+          margin-left: 0;
 
           a,
           p {
-            padding-left: 2rem;
+            padding-left: 1rem;
           }
 
           &::before {
-            background: #FFFFFF;
-            border-bottom: 1.5rem solid $codacy-neutral-800;
-            border-top: 1.5rem solid $codacy-neutral-800;
-            border-left: 1rem solid #FFFFFF;
-            content: "";
-            left: 0;
-            display: block;
-            position: absolute;
+            display: none;
           }
         }
       }
