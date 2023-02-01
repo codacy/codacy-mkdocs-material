@@ -81,18 +81,25 @@
         height: 3rem;
 
         &.nav-multistep__step--active {
-          &:first-child,
-          &:nth-child(2) {
+          &::before {
+            border-top-color: $codacy-neutral-300 !important;
+            border-bottom-color: $codacy-neutral-300 !important;
+          }
+          
+          &::after {
+            border-left-color: $codacy-neutral-300 !important;
+          }
+          
+          &:last-child {
             &::after {
-              border-left-color: $codacy-neutral-300 !important;
+              border-left-color: transparent !important;
             }
           }
 
-          &:nth-child(2),
-          &:nth-child(3) {
+          &:first-child {
             &::before {
-              border-top-color: $codacy-neutral-300 !important;
-              border-bottom-color: $codacy-neutral-300 !important;
+              border-top-color: transparent !important;
+              border-bottom-color: transparent !important;
             }
           }
         }
