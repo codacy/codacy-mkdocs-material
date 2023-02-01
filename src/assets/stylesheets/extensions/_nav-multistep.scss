@@ -1,9 +1,12 @@
 @import "../config";
 
 .nav-multistep {
+  margin-top: 2rem;
+
   ol {
     display: flex;
-    margin: 2rem 0 1rem;
+    margin-left: 0;
+    margin-bottom: 1rem;
 
     li {
       position:relative;
